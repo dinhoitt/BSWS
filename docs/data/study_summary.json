@@ -1,0 +1,135 @@
+{
+  "mos": {
+    "LeakyReLU_MPD_MRD": {
+      "n": 20,
+      "mean": 3.0874999999999995,
+      "sd": 0.6134190205209177,
+      "se": 0.13716466285761103,
+      "ci95": [
+        2.800411061280219,
+        3.37458893871978
+      ]
+    },
+    "Snake_MRD_only": {
+      "n": 20,
+      "mean": 2.605,
+      "sd": 0.6573271235605763,
+      "se": 0.14698281317358522,
+      "ci95": [
+        2.297361436503098,
+        2.912638563496902
+      ]
+    },
+    "GT": {
+      "n": 20,
+      "mean": 3.5050000000000003,
+      "sd": 0.49067622511666154,
+      "se": 0.10971853943038448,
+      "ci95": [
+        3.275356457802458,
+        3.7346435421975426
+      ]
+    },
+    "Snake_MPD_MRD": {
+      "n": 20,
+      "mean": 3.2825,
+      "sd": 0.552571738614806,
+      "se": 0.12355879699879517,
+      "ci95": [
+        3.023888465798219,
+        3.5411115342017814
+      ]
+    },
+    "HiFiGAN_AMP": {
+      "n": 20,
+      "mean": 3.2324999999999995,
+      "sd": 0.48511393127366426,
+      "se": 0.10847477271600743,
+      "ci95": [
+        3.005459691453213,
+        3.459540308546786
+      ]
+    },
+    "LeakyReLU_MRD_only": {
+      "n": 20,
+      "mean": 2.4850000000000003,
+      "sd": 0.6729940955399081,
+      "se": 0.15048605460832223,
+      "ci95": [
+        2.1700290679132244,
+        2.7999709320867763
+      ]
+    }
+  },
+  "mos_paired_full_minus_mrd_only": {
+    "Snake": {
+      "n": 20,
+      "mean": 0.6775000000000001,
+      "sd": 0.3122393649952415,
+      "se": 0.06981884453807283,
+      "ci95": [
+        0.5313674789593272,
+        0.823632521040673
+      ]
+    },
+    "LeakyReLU": {
+      "n": 20,
+      "mean": 0.6024999999999998,
+      "sd": 0.3625476375232422,
+      "se": 0.0810681162583923,
+      "ci95": [
+        0.43282248265871626,
+        0.7721775173412834
+      ]
+    }
+  },
+  "cmos_full_minus_mrd_only": {
+    "Snake": {
+      "n": 20,
+      "mean": 0.7050000000000001,
+      "sd": 0.5399561385695577,
+      "se": 0.1207378630709827,
+      "ci95": [
+        0.452292748363875,
+        0.9577072516361251
+      ]
+    },
+    "LeakyReLU": {
+      "n": 20,
+      "mean": 0.5974999999999999,
+      "sd": 0.5827509624277993,
+      "se": 0.13030707659419852,
+      "ci95": [
+        0.32476415428192207,
+        0.8702358457180778
+      ]
+    }
+  },
+  "ci_method": {
+    "unit": "participant mean across 20 utterances per condition/comparison",
+    "confidence": 0.95,
+    "distribution": "Student t",
+    "degrees_of_freedom": 19,
+    "t_critical": 2.093024054,
+    "formula": "mean +/- t_critical * sample_sd / sqrt(20)",
+    "mos_difference": "participant-paired MPD+MRD minus MRD-only",
+    "cmos_orientation": "stored B-minus-A score retained if B is MPD+MRD; sign reversed if A is MPD+MRD",
+    "interpretation": "Listener-level intervals condition on the fixed 20-utterance set; no utterance resampling or multi-seed inference."
+  },
+  "snapshot_verified": "2026-09-22",
+  "listeners_per_task": 20,
+  "utterances": 20,
+  "unique_listeners": 38,
+  "listeners_in_both_tasks": 2,
+  "mos_main_ratings": 2400,
+  "cmos_main_ratings": 800,
+  "model_order": [
+    "GT",
+    "HiFiGAN_AMP",
+    "Snake_MPD_MRD",
+    "Snake_MRD_only",
+    "LeakyReLU_MPD_MRD",
+    "LeakyReLU_MRD_only"
+  ],
+  "release_scope": "Aggregate results only; participant-level responses are not included."
+}

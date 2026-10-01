@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#1f6f5f">
+  <meta name="description" content="BSWS: audio samples and evaluation resources for an objective-subjective ranking reversal in BigVGAN-style discriminator ablations.">
+  <title>Better Scores, Worse Speech — BSWS</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f6f5f'/%3E%3Cpath d='M7 13v6m6-11v16m6-13v10m6-7v4' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="styles.css">
+  <script src="site-data.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <header class="site-header">
+    <a class="wordmark" href="#main" aria-label="BSWS home">BSWS<span class="wordmark-line" aria-hidden="true"></span></a>
+    <nav aria-label="Main navigation"><a href="#listen">Audio</a><a href="#results">Results</a><a href="#resources">Code &amp; data</a></nav>
+  </header>
+  <main id="main">
+    <section class="intro" aria-labelledby="paper-title">
+      <p class="eyebrow">Neural vocoder evaluation</p>
+      <h1 id="paper-title">Better Scores,<br><span class="accent">Worse Speech:</span><span class="subtitle">An Objective-Subjective Ranking Reversal in BigVGAN-Style Discriminator Ablations</span></h1>
+      <p class="lead">Does a generator with periodic activations still benefit from a multi-period discriminator?</p>
+      <p class="intro-text">We compare MPD+MRD with MRD-only supervision in a shared BigVGAN-style generator, using Snake and LeakyReLU activations. On the fixed listening stimuli, the evaluated reference-based metrics favor MRD-only on average, while listeners and UTMOS favor retaining MPD. Both activation conditions retain the generator’s anti-aliasing operations.</p>
+      <div class="intro-links"><a class="button primary" href="#listen">Listen to the samples</a><a class="text-link" href="#resources">Evaluation resources</a></div>
+      <p class="metadata">LibriTTS · 24 kHz · 20 fixed utterances · 6 listening conditions</p>
+    </section>
+
+    <section id="listen" class="section" aria-labelledby="listen-heading">
+      <div class="section-heading"><div><p class="section-number">01 / Audio samples</p><h2 id="listen-heading">Compare the same utterance.</h2></div><a href="data/audio_manifest.csv" download class="text-link">Audio manifest (CSV)</a></div>
+      <p class="section-intro">These are the complete WAV files presented in the listening tests. Use headphones and keep your device volume unchanged. Starting a clip stops the previous one; no additional loudness normalization is applied.</p>
+      <div class="sample-toolbar">
+        <div class="sample-choice"><label for="utterance">Utterance</label><select id="utterance" aria-describedby="utterance-info"></select></div>
+        <div class="sample-navigation"><button type="button" id="previous">Previous</button><button type="button" id="next">Next</button></div>
+        <p id="utterance-info" class="sample-info" aria-live="polite"></p>
+      </div>
+      <div id="players" class="players"></div>
+      <p id="audio-status" class="note" role="status" aria-live="polite"></p>
+      <p class="note">GT is recorded speech. HiFi-GAN AMP is a reference system; the four Snake/LeakyReLU conditions form the main factorial comparison. The sample browser displays model identities and is not a new listening test.</p>
+      <noscript><p>JavaScript enables the sample selector and results tables. The <a href="data/audio_manifest.csv">audio manifest</a> lists every WAV path; downloadable data and code remain available below.</p></noscript>
+    </section>
+
+    <section id="results" class="section" aria-labelledby="results-heading">
+      <div class="section-heading"><div><p class="section-number">02 / Listening results</p><h2 id="results-heading">Listeners favor retaining MPD.</h2></div><a href="data/listening_summary.csv" download class="text-link">Summary results (CSV)</a></div>
+      <p class="section-intro">20 listeners per task rated a fixed set of 20 utterances. MOS contains 2,400 main ratings; CMOS contains 800. Practice and attention checks are excluded from quality scores.</p>
+      <div class="results-layout">
+        <div class="table-panel"><h3>MOS</h3><p class="table-description">Overall quality, 1–5. Higher is better.</p><div class="table-scroll" tabindex="0" role="region" aria-label="MOS results"><table><caption class="sr-only">Mean opinion scores and listener-level 95% confidence intervals</caption><thead><tr><th scope="col">Condition</th><th scope="col">Mean</th><th scope="col">95% CI</th></tr></thead><tbody id="mos-rows"></tbody></table></div></div>
+        <div class="table-panel"><h3>CMOS</h3><p class="table-description">MPD+MRD relative to MRD-only, −3 to +3.</p><div class="table-scroll" tabindex="0" role="region" aria-label="CMOS results"><table><caption class="sr-only">Comparative scores with positive values favoring MPD+MRD</caption><thead><tr><th scope="col">Activation</th><th scope="col">Mean</th><th scope="col">95% CI</th></tr></thead><tbody id="cmos-rows"></tbody></table></div><p class="note">Positive CMOS favors MPD+MRD. A/B positions were balanced within each activation comparison: 10 trials in each orientation per listener.</p><h3 class="paired-heading">Paired MOS difference</h3><div class="table-scroll" tabindex="0" role="region" aria-label="Paired MOS differences"><table><caption class="sr-only">Within-listener MOS difference, MPD+MRD minus MRD-only</caption><thead><tr><th scope="col">Activation</th><th scope="col">Difference</th><th scope="col">95% CI</th></tr></thead><tbody id="paired-rows"></tbody></table></div></div>
+      </div>
+      <p class="note methods-note">Intervals are Student-t 95% confidence intervals over 20 listener-level means (19 degrees of freedom). Paired MOS differences are computed within listener. They condition on these stimuli and selected checkpoints, not variation across utterance samples or training seeds. Two listeners completed both tasks (38 unique listeners).</p>
+      <details class="objective-details"><summary>Objective evaluation on the same 20 utterances</summary><div class="details-body"><p>The eight reference-based measures favor MRD-only in their means under both activation settings. The learned, non-reference predictor UTMOS22 strong favors MPD+MRD. This is a disagreement between evaluation perspectives, not a claim that all automatic evaluation fails.</p><p class="note">Each metric uses 20 common valid utterances per pair. Direction-adjusted Δ is positive when MPD+MRD is better. Its 95% intervals use a paired-utterance percentile bootstrap with 20,000 resamples. Snake pitch error’s interval includes zero. These intervals differ from the listener-level intervals above.</p><div id="objective-tables"></div><a class="text-link" href="data/objective_paired.csv" download>Download exact objective results (CSV)</a></div></details>
+    </section>
+
+    <section id="protocol" class="section compact" aria-labelledby="protocol-heading">
+      <p class="section-number">03 / Experimental scope</p><h2 id="protocol-heading">A controlled discriminator ablation.</h2>
+      <div class="protocol-grid"><div><h3>Shared generator</h3><p>A direct-waveform, BigVGAN-style backbone with Snake or LeakyReLU. Anti-aliasing remains in both. The discriminator comparison retains MRD and either includes or removes MPD.</p></div><div><h3>Training &amp; selection</h3><p>LibriTTS train-clean-100, Colab A100, batch size 16, seed 1234, and 500 epochs. Checkpoints were selected within the final epoch using the lowest recorded generator total loss in each run.</p></div><div><h3>Fixed listening set</h3><p>One utterance per speaker from 20 speakers, sampled using reference duration (3–6 seconds) and file availability, not model-quality scores. Two instructed-response attention checks were included per task.</p></div></div>
+      <p class="note">The main factorial comparison uses one selected checkpoint per configuration. Applying the same within-run checkpoint rule does not make differently composed total losses an identical quality criterion.</p>
+    </section>
+
+    <section id="resources" class="section" aria-labelledby="resources-heading">
+      <p class="section-number">04 / Code &amp; data</p><h2 id="resources-heading">Inspect the evidence. Reproduce the evaluation.</h2>
+      <div class="resource-list">
+        <a href="downloads/evaluation-code.zip" download><span><strong>Evaluation code</strong><span>Metric implementations, dependencies, portable command-line runner and documentation.</span></span><span class="file-type">ZIP</span></a>
+        <a href="downloads/listening-audio.zip" download><span><strong>Listening audio</strong><span>All 120 original WAV files, the public manifest and audio attribution.</span></span><span class="file-type">ZIP</span></a>
+        <a href="data/listening_summary.csv" download><span><strong>Listening-test summary results</strong><span>MOS, paired MOS differences and normalized CMOS with listener-level intervals.</span></span><span class="file-type">CSV</span></a>
+        <a href="data/objective_per_utterance.csv" download><span><strong>Objective measurements</strong><span>Per-utterance measurements for the fixed listening files.</span></span><span class="file-type">CSV</span></a>
+        <a href="data/audio_manifest.csv" download><span><strong>Audio manifest</strong><span>Stimulus IDs, corpus IDs, model conditions, checkpoint steps and SHA-256 hashes.</span></span><span class="file-type">CSV</span></a>
+        <a href="data/study_summary.json" download><span><strong>Structured study summary</strong><span>Unrounded aggregate results and definitions used by this page.</span></span><span class="file-type">JSON</span></a>
+      </div>
+      <p class="release-note"><strong>Response-data availability.</strong> This release contains aggregate listening-test results, not participant-level responses. Participant identifiers, session identifiers and correspondence are not published.</p>
+      <p class="note">Reference speech is from <a href="https://www.openslr.org/60/">LibriTTS</a> (Zen et al., 2019), licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. Synthesized conditions are model reconstructions. See <a href="data/README.md">data documentation</a> and the code bundle’s third-party notices for provenance and reuse information.</p>
+    </section>
+  </main>
+  <footer><span>BSWS · Better Scores, Worse Speech</span><span>Research resources · No response collection</span></footer>
+</body>
+</html>

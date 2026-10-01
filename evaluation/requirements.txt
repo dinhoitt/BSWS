@@ -1,0 +1,15 @@
+# Numerical dependencies for the archived Python 3.12 matched-stimulus reanalysis.
+# Install matching torch/torchaudio builds separately (see README).
+numpy==1.26.4
+scipy==1.15.3
+librosa==0.10.2.post1
+soundfile==0.14.0
+pysptk==1.0.1
+fastdtw==0.3.4
+pesq==0.0.4
+torchcrepe==0.0.24
+auraloss==0.4.0
+scikit-image==0.26.0
+scikit-learn==1.9.1
+# pysptk uses the legacy pkg_resources interface.
+setuptools==80.9.0
