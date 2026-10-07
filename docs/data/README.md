@@ -52,3 +52,11 @@ The per-utterance intervals condition on that particular utterance and the selec
 M-STFT retains the archived evaluation convention: reference waveform first and generated waveform second in the auraloss call. These values have not been replaced by the reversed-input sensitivity analysis. Consult the evaluation code for preprocessing and metric settings.
 
 The released CSV contains only stimulus/activation labels, numerical measurements, aggregate listener counts, and aggregate confidence limits. It contains no Prolific IDs, participant pseudonyms, session IDs, timestamps, correspondence, IP addresses, access credentials, or local machine paths. All objective measurements were checked against `objective_per_utterance.csv`, and averages of the subjective columns reproduce `listening_summary.csv`. The numerical values are unchanged from the supplementary analysis.
+
+## On-page spectrogram atlas
+
+The [spectrogram viewer](../index.html#spectrograms) displays all 20 pages of the existing color supplementary atlas as losslessly encoded WebP renders. It includes GT (recorded speech) and the four Snake/LeakyReLU factorial conditions, not HiFi-GAN AMP. The source is the fixed selected-checkpoint listening set, not the common-416k sensitivity analysis. Public corpus and stimulus IDs identify speech files, not listening-test participants. No participant records or private paths are present.
+
+Each page preserves the original figure's panels, labels, axes, and magma colormap. Analysis uses the original 24-kHz audio, a 1,024-sample periodic Hann window and FFT, a 256-sample hop, SciPy STFT `spectrum` scaling, and no boundary or end padding. Magnitude is 20 log10(abs(STFT)) relative to 1, floored at -100 dB for display, with shared color limits of -100 to 0 dB and a frequency range of 0–12 kHz. Time axes are shared within each utterance. No gain matching, trimming, or time alignment is applied. This exploratory visualization is not a perceptual-quality score or a statistical significance test.
+
+The page loads the selected utterance's image on demand, supports larger viewing and horizontal scrolling, and links the selection to the existing audio player. It provides an inline viewer rather than an atlas PDF download.

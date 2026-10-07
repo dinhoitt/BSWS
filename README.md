@@ -20,6 +20,7 @@ For a local preview, serve `docs/` using any static HTTP server.
 - `docs/data/utterance_comparison_all_metrics.csv`: 40 per-utterance/activation aggregate comparisons joining MOS, CMOS, eight reference-based metrics and UTMOS; no participant-level records. Field definitions and interval scope are in `docs/data/README.md`.
 - `docs/data/objective_paired.csv`: objective comparisons on the same 20 utterances, including UTMOS and paired-utterance bootstrap intervals.
 - `docs/data/objective_per_utterance.csv`: individual automatic measurements.
+- `docs/figures/spectrograms/`: all 20 color spectrogram views, displayed in the page's interactive atlas. Five conditions share the original analysis settings and absolute magnitude scale; no PDF download is required.
 - `evaluation/`: portable objective-evaluation code. See its README for dependencies and execution.
 - `docs/downloads/`: downloadable audio and evaluation-code bundles.
 

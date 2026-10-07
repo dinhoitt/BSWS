@@ -7,15 +7,16 @@
   <meta name="description" content="BSWS: audio samples and evaluation resources for an objective-subjective ranking reversal in BigVGAN-style discriminator ablations.">
   <title>Better Scores, Worse Speech — BSWS</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%231f6f5f'/%3E%3Cpath d='M7 13v6m6-11v16m6-13v10m6-7v4' stroke='white' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="styles.css?v=20261007-atlas">
   <script src="site-data.js" defer></script>
   <script src="app.js" defer></script>
+  <script src="atlas.js?v=20261007" defer></script>
 </head>
 <body>
   <a class="skip" href="#main">Skip to content</a>
   <header class="site-header">
     <a class="wordmark" href="#main" aria-label="BSWS home">BSWS<span class="wordmark-line" aria-hidden="true"></span></a>
-    <nav aria-label="Main navigation"><a href="#listen">Audio</a><a href="#results">Results</a><a href="#resources">Code &amp; data</a></nav>
+    <nav aria-label="Main navigation"><a href="#listen">Audio</a><a href="#spectrograms">Spectrograms</a><a href="#results">Results</a><a href="#resources">Code &amp; data</a></nav>
   </header>
   <main id="main">
     <section class="intro" aria-labelledby="paper-title">
@@ -41,8 +42,31 @@
       <noscript><p>JavaScript enables the sample selector and results tables. The <a href="data/audio_manifest.csv">audio manifest</a> lists every WAV path; downloadable data and code remain available below.</p></noscript>
     </section>
 
+    <section id="spectrograms" class="section" aria-labelledby="spectrograms-heading">
+      <p class="section-number">02 / Spectrogram atlas</p>
+      <h2 id="spectrograms-heading">Inspect the same speech across conditions.</h2>
+      <p class="section-intro">Browse all 20 fixed listening utterances in color. Each view shows recorded speech (GT), followed by the four Snake/LeakyReLU discriminator conditions, with a shared absolute magnitude scale. HiFi-GAN AMP is not included in this atlas.</p>
+      <div id="atlas-controls" class="sample-toolbar atlas-controls" hidden>
+        <div class="sample-choice"><label for="atlas-utterance">Utterance</label><select id="atlas-utterance" aria-describedby="atlas-info"></select></div>
+        <div class="sample-navigation"><button type="button" id="atlas-previous" aria-label="Previous spectrogram">Previous</button><button type="button" id="atlas-next" aria-label="Next spectrogram">Next</button></div>
+        <p id="atlas-info" class="sample-info" aria-live="polite"></p>
+        <div class="atlas-actions"><button type="button" id="atlas-enlarge" aria-pressed="false" aria-controls="atlas-viewport">Enlarge</button><a id="atlas-listen" href="#listen">Listen to this utterance</a></div>
+      </div>
+      <p id="atlas-help" class="note atlas-help">On a small screen, scroll horizontally within the figure to keep labels readable. Enlarge for a closer look.</p>
+      <figure class="atlas-figure">
+        <div id="atlas-viewport" class="atlas-viewport" tabindex="0" role="region" aria-label="Spectrogram comparison" aria-describedby="atlas-help">
+          <img id="atlas-image" src="figures/spectrograms/U01.webp" width="1823" height="2048" loading="lazy" decoding="async" alt="U01 spectrograms, top to bottom: recorded speech, Snake with MPD+MRD, Snake with MRD-only, LeakyReLU with MPD+MRD, and LeakyReLU with MRD-only. Shared frequency range 0 to 12 kHz and magnitude scale minus 100 to 0 dB relative to 1.">
+        </div>
+        <figcaption id="atlas-caption" class="note">U01 · Identical analysis and absolute magnitude scale across the five conditions. These exploratory illustrations do not themselves establish perceptual quality or statistical significance.</figcaption>
+      </figure>
+      <p id="atlas-status" class="note" role="status" aria-live="polite"></p>
+      <button type="button" id="atlas-retry" class="atlas-retry" hidden>Retry image</button>
+      <details class="objective-details"><summary>Spectrogram settings and interpretation</summary><div class="details-body"><p>Original 24-kHz waveforms; 1,024-sample periodic Hann window and FFT, 256-sample hop, SciPy STFT spectrum scaling, and no boundary or end padding. Color represents 20 log<sub>10</sub>|STFT| in dB relative to 1, displayed from −100 to 0 dB using the magma colormap. Frequency spans 0–12 kHz; the time axis is shared within each utterance.</p><p class="note">No gain matching, trimming, or time alignment was applied. These are the selected-checkpoint listening stimuli, not the common-416k checkpoint analysis. The atlas preserves every panel, axis, label, and color limit of the existing supplementary figure; only its delivery format has changed.</p></div></details>
+      <noscript><p>Enable JavaScript to switch among all 20 utterances. The first utterance is shown above.</p></noscript>
+    </section>
+
     <section id="results" class="section" aria-labelledby="results-heading">
-      <div class="section-heading"><div><p class="section-number">02 / Listening results</p><h2 id="results-heading">Listeners favor retaining MPD.</h2></div><a href="data/listening_summary.csv" download class="text-link">Summary results (CSV)</a></div>
+      <div class="section-heading"><div><p class="section-number">03 / Listening results</p><h2 id="results-heading">Listeners favor retaining MPD.</h2></div><a href="data/listening_summary.csv" download class="text-link">Summary results (CSV)</a></div>
       <p class="section-intro">20 listeners per task rated a fixed set of 20 utterances. MOS contains 2,400 main ratings; CMOS contains 800. Practice and attention checks are excluded from quality scores.</p>
       <div class="results-layout">
         <div class="table-panel"><h3>MOS</h3><p class="table-description">Overall quality, 1–5. Higher is better.</p><div class="table-scroll" tabindex="0" role="region" aria-label="MOS results"><table><caption class="sr-only">Mean opinion scores and listener-level 95% confidence intervals</caption><thead><tr><th scope="col">Condition</th><th scope="col">Mean</th><th scope="col">95% CI</th></tr></thead><tbody id="mos-rows"></tbody></table></div></div>
@@ -53,14 +77,15 @@
     </section>
 
     <section id="protocol" class="section compact" aria-labelledby="protocol-heading">
-      <p class="section-number">03 / Experimental scope</p><h2 id="protocol-heading">A controlled discriminator ablation.</h2>
+      <p class="section-number">04 / Experimental scope</p><h2 id="protocol-heading">A controlled discriminator ablation.</h2>
       <div class="protocol-grid"><div><h3>Shared generator</h3><p>A direct-waveform, BigVGAN-style backbone with Snake or LeakyReLU. Anti-aliasing remains in both. The discriminator comparison retains MRD and either includes or removes MPD.</p></div><div><h3>Training &amp; selection</h3><p>LibriTTS train-clean-100, Colab A100, batch size 32, seed 1234, and 500 epochs. Checkpoints were selected within the final epoch using the lowest recorded generator total loss in each run.</p></div><div><h3>Fixed listening set</h3><p>One utterance per speaker from 20 speakers, sampled using reference duration (3–6 seconds) and file availability, not model-quality scores. Two instructed-response attention checks were included per task.</p></div></div>
       <p class="note">The main factorial comparison uses one selected checkpoint per configuration. Applying the same within-run checkpoint rule does not make differently composed total losses an identical quality criterion.</p>
     </section>
 
     <section id="resources" class="section" aria-labelledby="resources-heading">
-      <p class="section-number">04 / Code &amp; data</p><h2 id="resources-heading">Inspect the evidence. Reproduce the evaluation.</h2>
+      <p class="section-number">05 / Code &amp; data</p><h2 id="resources-heading">Inspect the evidence. Reproduce the evaluation.</h2>
       <div class="resource-list">
+        <a href="#spectrograms"><span><strong>Spectrogram atlas</strong><span>Explore all 20 utterances directly on this page, with five aligned conditions and a shared color scale.</span></span><span class="file-type">VIEW</span></a>
         <a href="downloads/evaluation-code.zip" download><span><strong>Evaluation code</strong><span>Metric implementations, dependencies, portable command-line runner and documentation.</span></span><span class="file-type">ZIP</span></a>
         <a href="downloads/listening-audio.zip" download><span><strong>Listening audio</strong><span>All 120 original WAV files, the public manifest and audio attribution.</span></span><span class="file-type">ZIP</span></a>
         <a href="data/listening_summary.csv" download><span><strong>Listening-test summary results</strong><span>MOS, paired MOS differences and normalized CMOS with listener-level intervals.</span></span><span class="file-type">CSV</span></a>
