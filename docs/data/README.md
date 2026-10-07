@@ -33,3 +33,22 @@ Lower is better for MCD, M-STFT, periodicity error and natural-log pitch error. 
 ## objective_per_utterance.csv
 
 Each row represents one condition and utterance, with a separate column for each metric. Only measurement fields and scientific identifiers are included. GT rows have UTMOS but no reference-based scores. See the evaluation code for metric definitions, input conventions and version requirements. Missing values are unavailable, not zero. This release excludes FAD and Lizard configurations.
+
+## utterance_comparison_all_metrics.csv
+
+Added to the public project page on 2026-10-07 from the 2026-10-05 supplementary analysis. This file joins aggregate listening scores with the existing public automatic measurements for the exact same fixed listening stimuli. Its 40 rows are 20 utterances (U01–U20) times two activation settings (Snake and LeakyReLU). These are the selected-checkpoint listening stimuli, not the complete 4,837-utterance evaluation or the common-416k sensitivity analysis. GT and HiFi-GAN AMP are not part of these pairwise rows.
+
+Each row contains 39 fields:
+
+- `utterance_id` identifies a public audio stimulus, not a participant. `activation` identifies Snake or LeakyReLU. Throughout this file, `full` means MPD+MRD and `only` means MRD-only.
+- `mos_full` and `mos_only` are the mean MOS across 20 listeners for that utterance and condition. `mos_delta` is the mean within-listener difference, MPD+MRD minus MRD-only.
+- `mos_delta_t_ci_low` and `mos_delta_t_ci_high` are the pointwise Student-t 95% confidence limits over the 20 paired listener differences (19 degrees of freedom).
+- `cmos` is the mean of 20 A/B-normalized comparative ratings for that utterance. Positive values favor MPD+MRD. `cmos_t_ci_low` and `cmos_t_ci_high` are the corresponding pointwise Student-t 95% confidence limits (19 degrees of freedom).
+- `n_mos_listeners` and `n_cmos_listeners` are aggregate counts, both 20. No participant-level scores or identifiers are included.
+- Each of `mcd`, `plcc`, `ssim`, `mstft`, `pesq`, `periodicity_error`, `pitch_error`, `voicing_f1`, and `utmos` has three columns: `_full`, `_only`, and `_benefit_full`. The first two retain the original unrounded measurements. `_benefit_full` is full minus only for higher-is-better metrics, and only minus full for lower-is-better metrics. Positive values therefore always favor MPD+MRD. The lower-is-better metrics are MCD, M-STFT, periodicity error, and natural-log pitch error. UTMOS is the learned, non-reference UTMOS22 strong predictor; the other eight are reference-based metrics.
+
+The per-utterance intervals condition on that particular utterance and the selected checkpoints. They are not crossed listener-by-utterance bootstrap intervals, training-seed intervals, or multiplicity-adjusted simultaneous intervals. The automatic measurements have no per-row confidence intervals in this file. Favorable means or signs alone do not establish statistical significance.
+
+M-STFT retains the archived evaluation convention: reference waveform first and generated waveform second in the auraloss call. These values have not been replaced by the reversed-input sensitivity analysis. Consult the evaluation code for preprocessing and metric settings.
+
+The released CSV contains only stimulus/activation labels, numerical measurements, aggregate listener counts, and aggregate confidence limits. It contains no Prolific IDs, participant pseudonyms, session IDs, timestamps, correspondence, IP addresses, access credentials, or local machine paths. All objective measurements were checked against `objective_per_utterance.csv`, and averages of the subjective columns reproduce `listening_summary.csv`. The numerical values are unchanged from the supplementary analysis.

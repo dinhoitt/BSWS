@@ -17,6 +17,7 @@ For a local preview, serve `docs/` using any static HTTP server.
 - `docs/audio/`: the 120 WAVs actually used in listening evaluation (20 utterances × 6 conditions).
 - `docs/data/audio_manifest.csv`: portable paths, corpus IDs, audio properties, reported checkpoint steps and SHA-256 hashes.
 - `docs/data/listening_summary.csv`: MOS, paired MOS differences and normalized CMOS with listener-level 95% intervals.
+- `docs/data/utterance_comparison_all_metrics.csv`: 40 per-utterance/activation aggregate comparisons joining MOS, CMOS, eight reference-based metrics and UTMOS; no participant-level records. Field definitions and interval scope are in `docs/data/README.md`.
 - `docs/data/objective_paired.csv`: objective comparisons on the same 20 utterances, including UTMOS and paired-utterance bootstrap intervals.
 - `docs/data/objective_per_utterance.csv`: individual automatic measurements.
 - `evaluation/`: portable objective-evaluation code. See its README for dependencies and execution.
